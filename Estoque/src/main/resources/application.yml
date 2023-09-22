@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: estoque
   data:
     mongodb:
       host: localhost
@@ -8,11 +10,7 @@ spring:
 server:
       port: 8081
 
-application:
-
-    name: cliente # Nome do seu aplicativo
-
-    eureka:
-      client:
-        service-url:
-          defaultZone: http://localhost:8761/eureka
+eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka
