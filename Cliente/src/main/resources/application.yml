@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/cliente?serverTimezone=UTC
     username: postgres
-    password: postgres
+    password: root
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -17,7 +17,7 @@ spring:
       ddl-auto: update
 
 server:
-    port: 8080
+    port: 8081
 
 
 eureka:

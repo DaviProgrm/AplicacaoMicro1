@@ -1,5 +1,7 @@
 package com.example.cliente.controller;
 
+import com.example.cliente.dto.CpfDTO;
+import com.example.cliente.exeption.ClienteNaoEncontradoException;
 import com.example.cliente.service.ClienteService;
 import com.example.cliente.domain.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/cliente")
 public class ClienteController {
     private final ClienteService clienteService;
 
@@ -20,28 +22,30 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Cliente>> listarTodos() {
-        List<Cliente> clientes = clienteService.listarTodos();
-        return new ResponseEntity<>(clientes, HttpStatus.OK);
+    @GetMapping("/teste")
+    public String teste(){
+        return "dawdad";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-        Optional<Cliente> cliente = clienteService.buscarPorId(id);
-        return cliente.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PostMapping("/verificar-cpf")
+    public ResponseEntity<?> verificarCpf(@RequestBody CpfDTO cpfDTO) {
+        String cpf = cpfDTO.getCpf();
+        try {
+            System.out.println("entrou no try");
+            Cliente cliente = clienteService.findByCpf(cpf);
+            if (cliente == null) {
+                throw new ClienteNaoEncontradoException("Cliente não encontrado");
+            }
+            return ResponseEntity.ok(cliente);
+        } catch (ClienteNaoEncontradoException e) {
+            System.out.println("entrou no catch");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) {
-        Cliente clienteSalvo = clienteService.salvar(cliente);
-        return new ResponseEntity<>(clienteSalvo, HttpStatus.CREATED);
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        clienteService.excluir(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+
+
+
 }
 

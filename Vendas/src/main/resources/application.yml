@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/vendas?serverTimezone=UTC
     username: postgres
-    password: postgres
+    password: root
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -16,7 +16,7 @@ spring:
       ddl-auto: create-drop
 
 server:
-  port: 8082
+  port: 8083
 
 eureka:
   client:

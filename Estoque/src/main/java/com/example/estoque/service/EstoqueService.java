@@ -29,6 +29,9 @@ public class EstoqueService {
         return estoqueRepository.save(estoque);
     }
 
+    public Estoque findByCodigoDeBarras(String codigo){
+        return  estoqueRepository.findByCodBarras(codigo);
+    }
     public void excluir(Long id) {
         estoqueRepository.deleteById(String.valueOf(id));
     }

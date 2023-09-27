@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public class ClienteService {
+
     private final ClienteRepository clienteRepository;
 
     @Autowired
@@ -22,6 +23,10 @@ public class ClienteService {
 
     public Optional<Cliente> buscarPorId(Long id) {
         return clienteRepository.findById(id);
+    }
+
+    public Cliente findByCpf(String cpf){
+        return clienteRepository.findByCpf(cpf);
     }
 
     public Cliente salvar(Cliente cliente) {

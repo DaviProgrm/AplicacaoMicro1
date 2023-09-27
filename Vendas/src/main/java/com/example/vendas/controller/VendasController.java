@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +16,12 @@ import java.util.Optional;
 public class VendasController {
     private final VendasService vendasService;
 
+    private final RestTemplate restTemplate;
+
     @Autowired
-    public VendasController(VendasService vendasService) {
+    public VendasController(VendasService vendasService, RestTemplate restTemplate) {
         this.vendasService = vendasService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping
@@ -42,5 +46,15 @@ public class VendasController {
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         vendasService.excluir(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/verificar-cliente")
+    public ResponseEntity<String> verificarCliente() {
+        String clienteServiceUrl = "http://cliente/teste"; // URL do serviço de cliente
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(clienteServiceUrl, String.class);
+
+        // Você pode manipular a resposta aqui, se necessário
+        String response = responseEntity.getBody();
+        return ResponseEntity.ok(response);
     }
 }
