@@ -44,6 +44,9 @@ public class EstoqueController {
             if (estoque == null) {
                 throw new ProdutoNaoEncontradoException("produto não encontrado");
             }
+            if (estoque.getQuantidade() <= 0){
+                throw new ProdutoNaoEncontradoException("produto zerado no estoque");
+            }
             return ResponseEntity.ok(estoque);
         } catch (ProdutoNaoEncontradoException e) {
             System.out.println("entrou no catch");
@@ -53,7 +56,7 @@ public class EstoqueController {
 
     @PostMapping
     public ResponseEntity<Estoque> salvar(@RequestBody Estoque estoque) {
-        Estoque e = new Estoque(new ObjectId(),"awdawd",10);
+        Estoque e = new Estoque(new ObjectId(),"12345",10);
         Estoque estoqueSalvo = estoqueService.salvar(e);
         return new ResponseEntity<>(estoqueSalvo, HttpStatus.CREATED);
     }

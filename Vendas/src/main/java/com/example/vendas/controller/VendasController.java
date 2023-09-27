@@ -1,6 +1,10 @@
 package com.example.vendas.controller;
 
+import com.example.vendas.domain.Cliente;
+import com.example.vendas.domain.Estoque;
 import com.example.vendas.domain.Vendas;
+import com.example.vendas.domain.reponse.ErrorResponse;
+import com.example.vendas.dto.VendasDTO;
 import com.example.vendas.service.VendasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +20,11 @@ import java.util.Optional;
 public class VendasController {
     private final VendasService vendasService;
 
-    private final RestTemplate restTemplate;
 
     @Autowired
     public VendasController(VendasService vendasService, RestTemplate restTemplate) {
         this.vendasService = vendasService;
-        this.restTemplate = restTemplate;
+
     }
 
     @GetMapping
@@ -42,19 +45,23 @@ public class VendasController {
         return new ResponseEntity<>(vendaSalva, HttpStatus.CREATED);
     }
 
+    @PostMapping("realizar-venda")
+    public ResponseEntity<?> realizarVenda(@RequestBody VendasDTO vendasDTO){
+        try {
+            //return vendasService.verificarExistenciaCliente(vendasDTO.getCpf());
+            return vendasService.realizarVenda(vendasDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+        }
+
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         vendasService.excluir(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/verificar-cliente")
-    public ResponseEntity<String> verificarCliente() {
-        String clienteServiceUrl = "http://cliente/teste"; // URL do serviço de cliente
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(clienteServiceUrl, String.class);
-
-        // Você pode manipular a resposta aqui, se necessário
-        String response = responseEntity.getBody();
-        return ResponseEntity.ok(response);
     }
-}
+
+
