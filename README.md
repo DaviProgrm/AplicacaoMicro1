@@ -1,3 +1,6 @@
+Alunos: Filipe Maia, Davi Cruz, Rafael Barros, Gabriel Adler
+
+
 para rodas a aplicacao eh necessario mudar as credenciais de acesso do postgres
 
 adicionar um cliente no banco de dados de cliente
